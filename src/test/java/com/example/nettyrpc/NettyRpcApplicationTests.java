@@ -2,14 +2,19 @@ package com.example.nettyrpc;
 
 import com.example.nettyrpc.Factory.MessageFactory;
 import com.example.nettyrpc.Handler.*;
+import com.example.nettyrpc.Server.Client;
 import com.example.nettyrpc.enums.CommandType;
 import com.example.nettyrpc.enums.SerializableType;
 import com.example.nettyrpc.net.*;
 
+import io.netty.channel.DefaultEventLoopGroup;
+import io.netty.channel.EventLoop;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +22,12 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 @SpringBootTest
+@Slf4j
 class NettyRpcApplicationTests {
 
 
@@ -34,6 +44,9 @@ class NettyRpcApplicationTests {
 
     @Autowired
     RpcResponseInboundHandler rpcResponseInboundHandler;
+
+    @Autowired
+    Client client;
 
 
 
@@ -121,6 +134,17 @@ class NettyRpcApplicationTests {
         DefaultRpcResponse response = new DefaultRpcResponse(1,null);
         channel.writeOutbound(new RpcResponseMessage(
                 messageFactory.createResponse(response, SerializableType.JSON, CommandType.response)));
+
+    }
+
+
+    public final List<Integer> list=new ArrayList<>();
+    @Test
+    void testTimeTask() {
+
+
+
+
 
     }
 }

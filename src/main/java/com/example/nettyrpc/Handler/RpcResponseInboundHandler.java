@@ -17,8 +17,6 @@ import java.util.*;
 public class RpcResponseInboundHandler extends SimpleChannelInboundHandler<RpcResponseMessage> {
     private final Map<Integer, Object> returnValue = new HashMap<>();
 
-
-
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcResponseMessage msg) throws Exception {
         if(CommandType.response.equals(msg.getCommandType()))
@@ -29,6 +27,8 @@ public class RpcResponseInboundHandler extends SimpleChannelInboundHandler<RpcRe
                 returnValue.put(msg.getSeq(), response.getValue());
                 log.info("Method Exec Successfully...");
             } else {
+                log.error("Method Exec failed...");
+                returnValue.put(msg.getSeq(), response.getExceptionValue());
                 Exception value = response.getExceptionValue();
                 value.printStackTrace();
             }
@@ -45,4 +45,5 @@ public class RpcResponseInboundHandler extends SimpleChannelInboundHandler<RpcRe
     {
         return returnValue.get(seq);
     }
+
 }

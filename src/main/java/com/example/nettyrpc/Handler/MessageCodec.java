@@ -10,19 +10,23 @@ import io.netty.handler.codec.ByteToMessageCodec;
 import io.netty.handler.codec.MessageToMessageCodec;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @ChannelHandler.Sharable
 @Component
 public class MessageCodec extends MessageToMessageCodec<ByteBuf,Message> {
 
 
-
+    private final Set<Integer> waitingRequest=new HashSet<>();
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, List<Object> out) throws Exception {
         ByteBuf byteBuf=ctx.alloc().buffer();
         MessageUtil.messageToByteBuf(msg,byteBuf);
         out.add(byteBuf);
+        waitingRequest.add(msg.getSeq());
     }
 
     @Override
@@ -31,9 +35,14 @@ public class MessageCodec extends MessageToMessageCodec<ByteBuf,Message> {
         try {
             message = MessageUtil.byteToMessage(byteBuf);
             list.add(message);
+            waitingRequest.remove(message.getSeq());
         } catch (IncorrectMagicNumberException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public boolean stillWaiting(int seq)
+    {
+        return waitingRequest.contains(seq);
     }
 }
