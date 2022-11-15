@@ -1,1 +1,6 @@
+spring:
+  profiles:
+    include: log,Rpc
+
+
 

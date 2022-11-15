@@ -27,6 +27,7 @@ public class RpcRequestMessage extends DefaultMessage{
         }
     }
 
+
     public RpcRequestMessage(Message message) {
         this(message.getMagicNumber(),message.getVersion(),message.getSerializableType(),message.getCommandType(), message.size(), message.content(),message.getSeq());
     }

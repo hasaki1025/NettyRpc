@@ -7,9 +7,10 @@ import com.example.nettyrpc.enums.SerializableType;
 import com.example.nettyrpc.net.DefaultMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
-
+@Slf4j
 public class MessageUtil {
 
 
@@ -37,21 +38,28 @@ public class MessageUtil {
         {
             throw new IncorrectMagicNumberException();
         }
+        log.debug("magic number :{}",magicNumber);
 
         int version = buf.readByte();
         buf.readByte();
+        log.debug("version :{}",version);
 
         SerializableType serializableType = SerializableType.forInt(buf.readByte());
+        log.debug("serializableType :{}",serializableType);
 
         CommandType commandType=CommandType.forInt(buf.readByte());
+        log.debug("commandType :{}",commandType);
 
         int seq = buf.readInt();
+        log.debug("seq :{}",seq);
 
         int len = buf.readInt();
+        log.debug("len :{}",len);
 
         byte[] bytes = new byte[len];
         buf.readBytes(bytes);
         String content=new String(bytes);
+        log.debug("content :{}",content);
 
         return new DefaultMessage(magicNumber, version, serializableType, commandType, len, content,seq);
     }
