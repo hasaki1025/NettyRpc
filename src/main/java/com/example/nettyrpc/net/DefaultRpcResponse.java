@@ -6,7 +6,14 @@ import lombok.ToString;
 
 @Data
 public class DefaultRpcResponse implements RpcResponse{
-    private final Object value;
-    private final Exception exceptionValue;
+    private  Object value;
+    private  Exception exceptionValue;
 
+    public DefaultRpcResponse(Object value, Exception exceptionValue) {
+        this.value = value;
+        this.exceptionValue = exceptionValue;
+    }
+
+    public DefaultRpcResponse() {
+    }
 }

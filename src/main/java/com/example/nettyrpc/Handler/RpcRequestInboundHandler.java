@@ -16,6 +16,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @ChannelHandler.Sharable
@@ -27,8 +29,11 @@ public class RpcRequestInboundHandler extends SimpleChannelInboundHandler<RpcReq
     @Autowired
     MessageFactory messageFactory;
 
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequestMessage requestMessage) throws Exception {
+        if (CommandType.request.equals(requestMessage.getCommandType()))
+        {
             RpcRequest request = requestMessage.getRpcRequest();
             Class<?> clazz = Class.forName(request.getInterfaceName());
             Object bean = context.getBean(clazz);
@@ -37,5 +42,8 @@ public class RpcRequestInboundHandler extends SimpleChannelInboundHandler<RpcReq
             Object result = method.invoke(bean, request.getParamValues());
             RpcResponseMessage message = messageFactory.createResponse(result, SerializableType.JSON, CommandType.response);
             ctx.writeAndFlush(message);
+            //TODO 需要设置一个set集合，该集合中存放了正在等待结果的连接的请求序号
+        }
+
     }
 }

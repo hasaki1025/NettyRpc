@@ -8,6 +8,9 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.GenericFutureListener;
+import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +21,8 @@ import java.io.IOException;
 
 @Component
 @Slf4j
+@Getter
+@ToString
 public class Client implements Closeable {
 
     @Value("${Rpc.register.Host}")
@@ -57,4 +62,6 @@ public class Client implements Closeable {
         channel.close();
         group.shutdownGracefully();
     }
+
+
 }

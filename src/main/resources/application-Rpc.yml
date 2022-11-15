@@ -4,6 +4,10 @@ Rpc:
   register:
     Host: 127.0.0.1
     port: 80
+  request:
+    maxResultTime: 1000000
+    resultTimeGap: 1000
+
 
 
 

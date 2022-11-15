@@ -8,6 +8,10 @@ logging:
     # mybatis日志
     org.mybatis: debug
     com.example.nettyrpc: debug
+    io:
+      netty:
+        handler:
+          logging: debug
   charset:
     # 输出控制台编码
     console: UTF-8

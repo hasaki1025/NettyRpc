@@ -16,6 +16,7 @@ public class RpcRequestMessage extends DefaultMessage{
 
         if (SerializableType.JSON.equals(serializableType))
         {
+
             try {
                 request=new ObjectMapper().readValue(content,DefaultRpcRequest.class);
             } catch (JsonProcessingException e) {

@@ -36,12 +36,12 @@ public class MessageFactory {
         return null;
     }
 
-
     public RpcResponseMessage createResponse(Object content, SerializableType serializableType, CommandType commandType)
     {
         DefaultMessage message = (DefaultMessage) getMessage(content, serializableType, commandType);
         return new RpcResponseMessage(message);
     }
+
 
     public RpcRequestMessage createRequest(Object content, SerializableType serializableType, CommandType commandType)
     {
